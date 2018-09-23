@@ -49,7 +49,7 @@ class SDLSoundMkxpConan(ConanFile):
     )
     requires = "sdl2/2.0.8@bincrafters/stable"
     generators = "cmake"
-    exports_sources = "*"
+    exports_sources = "CMakeLists.txt"
 
     def config_options(self):
         del self.settings.compiler.libcxx
@@ -67,7 +67,7 @@ class SDLSoundMkxpConan(ConanFile):
             self.requires("physfs/3.0.1@eliza/stable")
 
     def source(self):
-        self.run("git clone https://github.com/Ancurio/SDL_sound.git")
+        self.run("git clone https://github.com/elizagamedev/SDL_sound.git -b cmake")
 
     def build(self):
         cmake = CMake(self)
@@ -78,14 +78,8 @@ class SDLSoundMkxpConan(ConanFile):
             cmake.definitions["STATIC_FLAC"] = True
         cmake.configure()
         cmake.build()
-
-    def package(self):
-        self.copy("*.h", dst="include", src="hello")
-        self.copy("*hello.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["hello"]
+        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.includedirs = [os.path.join("include", "SDL2")]
