@@ -81,5 +81,8 @@ class SDLSoundMkxpConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        if self.options.shared:
+            self.cpp_info.libs = ["SDL_sound"]
+        else:
+            self.cpp_info.libs = ["SDL_sound", "decoders", "timidity", "mpg123"]
         self.cpp_info.includedirs = [os.path.join("include", "SDL2")]
