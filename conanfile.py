@@ -23,7 +23,6 @@ class SDLSoundMkxpConan(ConanFile):
         "ogg",
         "flac",
         "speex",
-        "physfs",
     )
     options = dict({
         "shared": [True, False],
@@ -45,7 +44,6 @@ class SDLSoundMkxpConan(ConanFile):
         "with_ogg=True",
         "with_flac=True",
         "with_speex=False",
-        "with_physfs=True",
     )
     requires = "sdl2/2.0.8@bincrafters/stable"
     generators = "cmake"
@@ -63,8 +61,6 @@ class SDLSoundMkxpConan(ConanFile):
             self.requires("flac/1.3.2@bincrafters/stable")
         if self.options.with_ogg:
             self.requires("vorbis/1.3.6@bincrafters/stable")
-        if self.options.with_physfs:
-            self.requires("physfs/3.0.1@eliza/stable")
 
     def source(self):
         self.run("git clone https://github.com/elizagamedev/SDL_sound.git -b cmake")
